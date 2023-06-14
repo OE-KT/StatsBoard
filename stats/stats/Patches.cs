@@ -23,7 +23,7 @@ namespace stats
         {
             if (soundIndex == 2)
             {
-                if (GorillaGameManager.instance is GorillaHuntManager && !Main.Instance.IsLocalTagged)
+                if (GorillaGameManager.instance is GorillaHuntManager && GorillaTagger.Instance.offlineVRRig.currentMatIndex != 0)
                 {
                     Main.Instance.manualLogSource.LogMessage("You won hunt:) Great job");
                     Main.Instance.Data.huntwins++;
