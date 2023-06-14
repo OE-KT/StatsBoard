@@ -12,18 +12,18 @@ namespace stats
             Main.Instance.GameInitialized();
         }
 
-        /*[HarmonyPatch(typeof(GorillaNetworking.GorillaComputer), "OnJoinedRoom"), HarmonyPostfix, HarmonyWrapSafe]
+        [HarmonyPatch(typeof(GorillaNetworking.PhotonNetworkController), "OnJoinedRoom"), HarmonyPostfix, HarmonyWrapSafe]
         private static void GorillaNetworking_GorillaComputer_OnJoinedRoom()
         {
             Main.Instance.IsLocalTagged = false;
-        }*/
+        }
 
         [HarmonyPatch(typeof(VRRig), "PlayTagSound"), HarmonyPrefix, HarmonyWrapSafe]
         private static void HandTagSound(int soundIndex, float soundVolume) // The soundIndex2 check is from BananaHook
         {
             if (soundIndex == 2)
             {
-                if (GorillaGameManager.instance is GorillaHuntManager && GorillaTagger.Instance.offlineVRRig.currentMatIndex != 0)
+                if (GorillaGameManager.instance is GorillaHuntManager && GorillaTagger.Instance.offlineVRRig.currentMatIndex != 3)
                 {
                     Main.Instance.manualLogSource.LogMessage("You won hunt:) Great job");
                     Main.Instance.Data.huntwins++;
