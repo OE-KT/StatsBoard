@@ -12,6 +12,15 @@ namespace stats
             Main.Instance.GameInitialized();
         }
 
+#if DEBUG
+        [HarmonyPatch(typeof(VRRig), "Awake"), HarmonyPostfix]
+        private static void VRRig_Awake(VRRig __instance)
+        {
+            foreach (var x in __instance.materialsToChangeTo) 
+                Main.Instance.manualLogSource.LogInfo($"Material: {x.name}");
+        }
+#endif
+
         [HarmonyPatch(typeof(GorillaNetworking.PhotonNetworkController), "OnJoinedRoom"), HarmonyPostfix, HarmonyWrapSafe]
         private static void GorillaNetworking_GorillaComputer_OnJoinedRoom()
         {
