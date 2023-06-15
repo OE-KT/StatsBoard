@@ -30,15 +30,15 @@ namespace stats
         [HarmonyPatch(typeof(VRRig), "PlayTagSound"), HarmonyPrefix, HarmonyWrapSafe]
         private static void HandTagSound(int soundIndex, float soundVolume) // The soundIndex2 check is from BananaHook
         {
-            if (soundIndex == 2)
+            if (soundIndex == 2 && GorillaGameManager.instance is GorillaHuntManager)
             {
-                if (GorillaGameManager.instance is GorillaHuntManager && !Main.Instance.IsLocalTagged_Hunt)
+                Main.Instance.Data.HuntPlayed++;
+                if (!GorillaTagger.Instance.myVRRig.iceParticleSystem.isPlaying)
                 {
                     Main.Instance.manualLogSource.LogMessage("You won hunt:) Great job");
                     Main.Instance.Data.huntwins++;
                     Behaviours.Statsboard.Instance.RefreshBoard();
                 }
-                Main.Instance.IsLocalTagged_Hunt = false;
             }
         }
     }

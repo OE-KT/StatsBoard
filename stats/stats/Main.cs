@@ -21,7 +21,6 @@ namespace stats
         internal statsData Data;
         internal ManualLogSource manualLogSource => Logger;
         // internal bool InRoom;
-        internal bool IsLocalTagged_Hunt;
 
         internal ConfigEntry<bool> AutoSave;
         internal ConfigEntry<float> AutoSaveInterval;
@@ -39,6 +38,13 @@ namespace stats
             AutoRefreshBoardInterval = Config.Bind("AutoRefreshBoard", "Interval", 5f, "How often to refresh the board (in seconds)");
 
             Data = StatisticsController.LoadPlayer();
+            // Handle invalid data
+            if (Data.HuntPlayed < Data.huntwins)
+            {
+                manualLogSource.LogWarning("Invalid data detected! Looks like this is a new stat data");
+                Data.HuntPlayed = Data.huntwins;
+            }
+
             new HarmonyLib.Harmony(ID).PatchAll();
         }
 

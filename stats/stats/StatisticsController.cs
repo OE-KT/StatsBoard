@@ -18,11 +18,10 @@ namespace stats
             FileStream fileStream = new FileStream(path, FileMode.Create);
             statsData data = Main.Instance.Data;
 
-
             formatter.Serialize(fileStream, data);
             fileStream.Close();
 
-            Debug.Log("SAVED BANANA FIEND DATA TO " + path);
+            Main.Instance.manualLogSource.LogInfo("SAVED BANANA FIEND DATA TO " + path);
         }
         public static statsData LoadPlayer()
         {

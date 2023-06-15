@@ -70,7 +70,7 @@ namespace stats.Behaviours
             board.name.text = PlayerPrefs.GetString("playerName").ToUpper();
             board.tags.text = $"TAGS: {data.Tags}";
             board.tagged.text = $"TIMES TAGGED: {data.Tagged}";
-            board.matches.text = $"HUNT MATCHES WON: {data.huntwins}";
+            board.matches.text = $"HUNT MATCHES WON: ({data.huntwins}/{data.HuntPlayed})";
 
             // Not totally sure what the point of all of this is, so I am just to leave it in
             float R = PlayerPrefs.GetFloat("redValue") / 1.0f * 255.0f;

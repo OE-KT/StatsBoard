@@ -11,6 +11,8 @@
         public int huntwins;
         public double TodleTimne;
 
+        public int HuntPlayed = 4; // The full amount of hunt matches played, wins&losses
+
         public statsData()
         {
         }
