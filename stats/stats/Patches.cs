@@ -39,6 +39,7 @@ namespace stats
                     Main.Instance.Data.huntwins++;
                     Behaviours.Statsboard.Instance.RefreshBoard();
                 }
+                Behaviours.Statsboard.Instance.RefreshBoard();
             }
         }
     }
