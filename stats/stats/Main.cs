@@ -21,7 +21,7 @@ namespace stats
         internal statsData Data;
         internal ManualLogSource manualLogSource => Logger;
         // internal bool InRoom;
-        internal bool IsLocalTagged;
+        internal bool IsLocalTagged_Hunt;
 
         internal ConfigEntry<bool> AutoSave;
         internal ConfigEntry<float> AutoSaveInterval;

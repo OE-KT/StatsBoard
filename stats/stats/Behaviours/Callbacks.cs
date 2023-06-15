@@ -44,9 +44,7 @@ namespace stats.Behaviours
                     }
                     else if (taggedId == LocalId)
                     {
-                        Main.Instance.IsLocalTagged = transform;
                         Main.Instance.Data.Tagged++;
-                        Main.Instance.IsLocalTagged = true;
                         Main.Instance.manualLogSource.LogInfo("Increated times tagged");
                         Statsboard.Instance.RefreshBoard();
                     }

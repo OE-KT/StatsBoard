@@ -12,19 +12,11 @@ namespace stats
             Main.Instance.GameInitialized();
         }
 
-#if DEBUG
-        [HarmonyPatch(typeof(VRRig), "Awake"), HarmonyPostfix]
-        private static void VRRig_Awake(VRRig __instance)
+        // ChangeMaterialLocal(int materialIndex)
+        [HarmonyPatch(typeof(VRRig), "ChangeMaterialLocal"), HarmonyPostfix]
+        private static void VRRig_ChangeMaterialLocal(VRRig __instance, int materialIndex)
         {
-            foreach (var x in __instance.materialsToChangeTo) 
-                Main.Instance.manualLogSource.LogInfo($"Material: {x.name}");
-        }
-#endif
-
-        [HarmonyPatch(typeof(GorillaNetworking.PhotonNetworkController), "OnJoinedRoom"), HarmonyPostfix, HarmonyWrapSafe]
-        private static void GorillaNetworking_GorillaComputer_OnJoinedRoom()
-        {
-            Main.Instance.IsLocalTagged = false;
+            Main.Instance.IsLocalTagged_Hunt = __instance.TryGetComponent(out Photon.Pun.PhotonView component) && component.IsMine && materialIndex == 3; // 3 is the index of the ice material
         }
 
         [HarmonyPatch(typeof(VRRig), "PlayTagSound"), HarmonyPrefix, HarmonyWrapSafe]
@@ -32,13 +24,13 @@ namespace stats
         {
             if (soundIndex == 2)
             {
-                if (GorillaGameManager.instance is GorillaHuntManager && GorillaTagger.Instance.myVRRig.currentMatIndex != 3)
+                if (GorillaGameManager.instance is GorillaHuntManager && !Main.Instance.IsLocalTagged_Hunt)
                 {
                     Main.Instance.manualLogSource.LogMessage("You won hunt:) Great job");
                     Main.Instance.Data.huntwins++;
                     Behaviours.Statsboard.Instance.RefreshBoard();
                 }
-                Main.Instance.IsLocalTagged = false;
+                Main.Instance.IsLocalTagged_Hunt = false;
             }
         }
     }
