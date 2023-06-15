@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using UnityEngine;
 
 namespace stats
 {
@@ -12,11 +13,18 @@ namespace stats
             Main.Instance.GameInitialized();
         }
 
-        // ChangeMaterialLocal(int materialIndex)
-        [HarmonyPatch(typeof(VRRig), "ChangeMaterialLocal"), HarmonyPostfix]
-        private static void VRRig_ChangeMaterialLocal(VRRig __instance, int materialIndex)
+        [HarmonyPatch(typeof(VRRig), "InitializeNoobMaterialLocal"), HarmonyPostfix]
+        private static void VRRig_InitializeNoobMaterialLocal(VRRig __instance)
         {
-            Main.Instance.IsLocalTagged_Hunt = __instance.TryGetComponent(out Photon.Pun.PhotonView component) && component.IsMine && materialIndex == 3; // 3 is the index of the ice material
+            if (__instance.isMyPlayer || __instance.isOfflineVRRig)
+                Behaviours.Statsboard.Instance.RefreshBoard();
+        }
+
+        [HarmonyPatch(typeof(PlayerPrefs), "SetString"), HarmonyPostfix]
+        private static void PlayerPrefsStringChanged(string key, string value)
+        {
+            if (key == "playerName")
+                Behaviours.Statsboard.Instance.RefreshBoard();
         }
 
         [HarmonyPatch(typeof(VRRig), "PlayTagSound"), HarmonyPrefix, HarmonyWrapSafe]
