@@ -16,14 +16,14 @@ namespace stats
         [HarmonyPatch(typeof(VRRig), "InitializeNoobMaterialLocal"), HarmonyPostfix]
         private static void VRRig_InitializeNoobMaterialLocal(VRRig __instance)
         {
-            if (__instance.isMyPlayer || __instance.isOfflineVRRig)
+            if (__instance.isMyPlayer || __instance.isOfflineVRRig && Behaviours.Statsboard.Instance is object)
                 Behaviours.Statsboard.Instance.RefreshBoard();
         }
 
         [HarmonyPatch(typeof(PlayerPrefs), "SetString"), HarmonyPostfix]
         private static void PlayerPrefsStringChanged(string key, string value)
         {
-            if (key == "playerName")
+            if (key == "playerName" && Behaviours.Statsboard.Instance is object)
                 Behaviours.Statsboard.Instance.RefreshBoard();
         }
 
